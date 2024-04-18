@@ -14,7 +14,7 @@ namespace BinarySearch
 
         private static void Init()
         {
-            Console.Write("Для начала работы программы, введите размер массива (по умолчанию 10): ");
+            Console.Write("Для начала работы программы, введите размер массива (по умолчанию 100): ");
             string input = Console.ReadLine();
             int.TryParse(input, out int size);
             array = new JaggedArray(size);
@@ -25,7 +25,6 @@ namespace BinarySearch
         private static void SelectSearchableValues()
         {
             Console.Write("Введите значения для поиска (допускается ввод множ-ва значений через пробел): ");
-
         }
 
         private static void CLSAfterKeydown()
@@ -42,6 +41,8 @@ namespace BinarySearch
 
         public JaggedArray(int size)
         {
+            //Для установки значения по умолчанию
+            size = size == 0 ? 100 : size;
             array = new int[ArraysAmount(size)][];
             FillArray(size);
             ConsoleMessages.ShowPositiveMessage("Создание успешно! Количество: " + array.Length);
@@ -52,7 +53,7 @@ namespace BinarySearch
             }
             else
             {
-                ConsoleMessages.ShowInfoMessage("Так как размер больше 100, отображатся массив не будет.");
+                ConsoleMessages.ShowInfoMessage("Так как размер больше 100, отображатся массивы не будут.");
             }
         }
 
@@ -67,15 +68,14 @@ namespace BinarySearch
             for (int i = 0; i < array.Length; i++)
             {
                 currentSize += 10;
-                array[i] = new int[(size - currentSize) > 0? currentSize:  size];
+                array[i] = new int[(size - currentSize) > 0 ? currentSize : size];
                 for (int j = 0; j < array[i].Length; j++)
-                { 
-                    array[i][j] = j+1;
+                {
+                    array[i][j] = j + 1;
                 }
             }
         }
 
-        //Существует ради отладки
         public void Print()
         {
             for (int i = 0; i < array.Length; i++)
@@ -107,7 +107,7 @@ namespace BinarySearch
         }
     }
 
-    class Search
+    internal class Search
     {
         public int FindElPositionViaBinarySearch(int elementValue, int[] array)
         {
