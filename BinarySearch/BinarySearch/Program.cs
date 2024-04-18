@@ -228,10 +228,12 @@ namespace BinarySearch
 
     internal static class Benchmark
     {
-        //[номер искомого в Search][При размере][Результаты - ms,ticks,result(bool)]
+        //[номер искомого в Search][При размере][Результаты - ticks,result(bool)]
         private static long[][][] binarResults;
+        private static long binarMinimum = long.MaxValue;
 
         private static long[][][] linearResults;
+        private static long linear = long.MaxValue;
 
         public static void Start(JaggedArray array)
         {
@@ -283,7 +285,7 @@ namespace BinarySearch
                     int result = Search.FindElPositionViaBinarySearch(i, array[j]);
                     stopwatch.Stop();
 
-                    binarResults[i][j] = new long[] { stopwatch.ElapsedMilliseconds, stopwatch.ElapsedTicks, result };
+                    binarResults[i][j] = new long[] { stopwatch.ElapsedTicks, result };
                 }
             }
         }
@@ -291,8 +293,6 @@ namespace BinarySearch
         public static void PrintResults(JaggedArray array)
         {
             Console.Clear();
-            Console.WriteLine("Время отображается в формате \"Миллисекунды.тики\"");
-
             for (int i = 0; i < binarResults.Length; i++)
             {
                 ConsoleManipulator.ShowInfoMessage("Результаты для значения \"" + Search.getSearchValues()[i] + "\":");
@@ -301,16 +301,21 @@ namespace BinarySearch
                     PerformansePrint(binarResults[i][j], linearResults[i][j], array.array[j]);
                 }
             }
+
+            Console.WriteLine("\nИтоговая статистика:");
+
+
+            Console.WriteLine("Время отображается в тиках");
         }
 
         private static void PerformansePrint(long[] binar, long[] linear, int[] array)
         {
             Console.Write("[0 - " + array.Length + "]: результат - ");
-            Console.ForegroundColor = binar[2] >= 0 ? ConsoleColor.Green : ConsoleColor.Red;
-            Console.Write(binar[2] >= 0 ? "Успешно! " : "Не найдено! ");
+            Console.ForegroundColor = binar[1] >= 0 ? ConsoleColor.Green : ConsoleColor.Red;
+            Console.Write(binar[1] >= 0 ? "Успешно! " : "Не найдено! ");
             Console.ResetColor();
 
-            Console.WriteLine(" Время линейного: " + linear[0] + "." + linear[1] + " Время бинарного: " + binar[0] + "." + binar[1]);
+            Console.WriteLine(" Время линейного: " + linear[0]+ "ticks; Время бинарного: " + binar[0] + " ticks");
         }
     }
 }
