@@ -232,14 +232,14 @@ namespace BinarySearch
         private static long[][][] binarResults;
 
         private static long binarMinimum = long.MaxValue;
-        private static long binarMaximum = long.MaxValue;
+        private static long binarMaximum = 0;
         private static double binarAverage;
 
         //[номер искомого в Search][При размере][Результаты - ticks,result(bool)]
         private static long[][][] linearResults;
 
         private static long linearMinimum = long.MaxValue;
-        private static long linearMaximum = long.MaxValue;
+        private static long linearMaximum = 0;
         private static double linearAverage;
 
         public static void Start(JaggedArray array)
@@ -312,6 +312,15 @@ namespace BinarySearch
 
             Console.WriteLine("\nИтоговая статистика:");
             CountAverage();
+
+            Console.WriteLine("Среднее время линейного поиска: " + linearAverage);
+            Console.WriteLine("Среднее время бинарного поиска: " + binarAverage);
+
+            Console.WriteLine("Максимальное время линейного поиска: " + linearMaximum);
+            Console.WriteLine("Максимальное время бинарного поиска: " + binarMaximum);
+
+            Console.WriteLine("Минимальное время линейного поиска: " + linearMinimum);
+            Console.WriteLine("Минимальное время бинарного поиска: " + binarMinimum);
         }
 
         private static void PerformansePrint(long[] binar, long[] linear, int[] array)
@@ -362,6 +371,7 @@ namespace BinarySearch
             }
 
             binarAverage = (double)bSum / counter;
+            linearAverage = (double)lSum / counter;
         }
     }
 }
