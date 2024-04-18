@@ -23,7 +23,7 @@ namespace BinarySearch
         {
             array = new int[size == 0 ? 10 : size];
             FillArray();
-            ShowPositiveMessage("Создание успешно!");
+            ShowPositiveMessage("Создание успешно! Размер: " + array.Length);
         }
 
         private void FillArray()
