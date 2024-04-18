@@ -230,10 +230,15 @@ namespace BinarySearch
     {
         //[номер искомого в Search][При размере][Результаты - ticks,result(bool)]
         private static long[][][] binarResults;
-        private static long binarMinimum = long.MaxValue;
 
+        private static long binarMinimum = long.MaxValue;
+        private static long binarMaximum = long.MaxValue;
+
+        //[номер искомого в Search][При размере][Результаты - ticks,result(bool)]
         private static long[][][] linearResults;
-        private static long linear = long.MaxValue;
+
+        private static long linearMinimum = long.MaxValue;
+        private static long linearMaximum = long.MaxValue;
 
         public static void Start(JaggedArray array)
         {
@@ -256,33 +261,33 @@ namespace BinarySearch
 
         private static void TestLinear(int[][] array)
         {
-            Stopwatch stopwatch = new Stopwatch();
+            //вынесено отдельно, для того, чтобы шарпы не выделяли память (влияет на время. Проверено)
+            int result;
 
             for (int i = 0; i < Search.getSearchValues().Length; i++)
             {
                 for (int j = 0; j < array.Length; j++)
                 {
-                    stopwatch.Restart();   
-                    stopwatch.Start();
-                    int result = Search.FindElPositionByLinearSearch(i, array[j]);
+                    Stopwatch stopwatch = Stopwatch.StartNew();
+                    result = Search.FindElPositionByLinearSearch(i, array[j]);
                     stopwatch.Stop();
 
-                    linearResults[i][j] = new long[] { stopwatch.ElapsedMilliseconds, stopwatch.ElapsedTicks, result };
+                    linearResults[i][j] = new long[] { stopwatch.ElapsedTicks, result };
                 }
             }
         }
 
         private static void TestBinar(int[][] array)
         {
-            Stopwatch stopwatch = new Stopwatch();
+            //вынесено отдельно, для того, чтобы шарпы не выделяли память (влияет на время. Проверено)
+            int result;
 
             for (int i = 0; i < Search.getSearchValues().Length; i++)
             {
                 for (int j = 0; j < array.Length; j++)
                 {
-                    stopwatch.Restart();
-                    stopwatch.Start();
-                    int result = Search.FindElPositionViaBinarySearch(i, array[j]);
+                    Stopwatch stopwatch = Stopwatch.StartNew();
+                    result = Search.FindElPositionViaBinarySearch(i, array[j]);
                     stopwatch.Stop();
 
                     binarResults[i][j] = new long[] { stopwatch.ElapsedTicks, result };
@@ -303,9 +308,6 @@ namespace BinarySearch
             }
 
             Console.WriteLine("\nИтоговая статистика:");
-
-
-            Console.WriteLine("Время отображается в тиках");
         }
 
         private static void PerformansePrint(long[] binar, long[] linear, int[] array)
@@ -315,7 +317,7 @@ namespace BinarySearch
             Console.Write(binar[1] >= 0 ? "Успешно! " : "Не найдено! ");
             Console.ResetColor();
 
-            Console.WriteLine(" Время линейного: " + linear[0]+ "ticks; Время бинарного: " + binar[0] + " ticks");
+            Console.WriteLine(" Время линейного: " + linear[0] + " ticks; Время бинарного: " + binar[0] + " ticks");
         }
     }
 }
