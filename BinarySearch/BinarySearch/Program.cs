@@ -19,7 +19,7 @@ namespace BinarySearch
             int.TryParse(input, out int size);
             array = new JaggedArray(size);
 
-            CLSAfterKeydown();
+            ConsoleManipulator.CLSAfterKeydown();
         }
 
         private static void SelectSearchableValues()
@@ -27,14 +27,7 @@ namespace BinarySearch
             Console.Write("Введите значения для поиска (допускается ввод множ-ва значений через пробел): ");
             Search.setSearchValuesViaString(Console.ReadLine());
 
-            CLSAfterKeydown();
-        }
-
-        private static void CLSAfterKeydown()
-        {
-            ConsoleMessages.ShowInfoMessage("Нажмите кнопку чтобы продолжить...");
-            Console.ReadKey();
-            Console.Clear();
+            ConsoleManipulator.CLSAfterKeydown();
         }
     }
 
@@ -48,7 +41,7 @@ namespace BinarySearch
             size = size == 0 ? 100 : size;
             array = new int[ArraysAmount(size)][];
             FillArray(size);
-            ConsoleMessages.ShowPositiveMessage("Создание успешно! Количество: " + array.Length);
+            ConsoleManipulator.ShowPositiveMessage("Создание успешно! Количество: " + array.Length);
 
             if (array.Length < 100)
             {
@@ -56,7 +49,7 @@ namespace BinarySearch
             }
             else
             {
-                ConsoleMessages.ShowInfoMessage("Так как размер больше 100, отображатся массивы не будут.");
+                ConsoleManipulator.ShowInfoMessage("Так как размер больше 100, отображатся массивы не будут.");
             }
         }
 
@@ -93,7 +86,7 @@ namespace BinarySearch
         }
     }
 
-    internal static class ConsoleMessages
+    internal static class ConsoleManipulator
     {
         public static void ShowPositiveMessage(string message)
         {
@@ -107,6 +100,13 @@ namespace BinarySearch
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(message);
             Console.ResetColor();
+        }
+
+        public static void CLSAfterKeydown()
+        {
+            ShowInfoMessage("Нажмите кнопку чтобы продолжить...");
+            Console.ReadKey();
+            Console.Clear();
         }
     }
 
@@ -124,14 +124,14 @@ namespace BinarySearch
                 int.TryParse(stringArray[i], out searchValues[i]);
             }
 
-            ConsoleMessages.ShowPositiveMessage("Числа получены! Количество: " + searchValues.Length);
+            ConsoleManipulator.ShowPositiveMessage("Числа получены! Количество: " + searchValues.Length);
             if (searchValues.Length < 100)
             {
                 Print();
             }
             else
             {
-                ConsoleMessages.ShowInfoMessage("Так как размер больше 100, отображатся массивы не будут.");
+                ConsoleManipulator.ShowInfoMessage("Так как размер больше 100, отображатся массивы не будут.");
             }
         }
 
@@ -182,5 +182,10 @@ namespace BinarySearch
             }
             return -1;
         }
+    }
+
+    static class Exec
+    {
+
     }
 }
