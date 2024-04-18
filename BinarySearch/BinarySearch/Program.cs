@@ -102,9 +102,9 @@ namespace BinarySearch
 
         public int FindElPositionByLinearSearch(int elementValue)
         {
-            for(int i = 0; i < array.Length; i++)
+            for (int i = 0; i < array.Length; i++)
             {
-                if(array[i] == elementValue)
+                if (array[i] == elementValue)
                 {
                     return i;
                 }
