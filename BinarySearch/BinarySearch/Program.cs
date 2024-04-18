@@ -54,7 +54,7 @@ namespace BinarySearch
             FillArray(size);
             ConsoleManipulator.ShowPositiveMessage("Создание успешно! Количество: " + array.Length);
 
-            if (array[array.Length-1].Length < 100)
+            if (array[array.Length - 1].Length < 100)
             {
                 Print();
             }
@@ -66,20 +66,19 @@ namespace BinarySearch
 
         private int ValidateSize(int size)
         {
-            if(size == 0)
+            if (size == 0)
             {
                 ConsoleManipulator.ShowInfoMessage("Установлено значение по умолчанию: " + defaultSize);
                 return defaultSize;
             }
-            if(size > maxSize)
+            if (size > maxSize)
             {
                 ConsoleManipulator.ShowWarningMessage("Значения выше " + maxSize + " приводят к заполнению оперативной памяти и зависанию ПК!");
-                ConsoleManipulator.ShowInfoMessage("Установлено безопастное значение (кушает ~10.2 гигов оперативы): " + maxSize);
+                ConsoleManipulator.ShowInfoMessage("Установлено безопастное значение (выяснено эксперементальным путём. Кушает ~10.2 гигов оперативы): " + maxSize);
                 return maxSize;
             }
             return size;
         }
-
 
         public int ArraysAmount(int size)
         {
@@ -304,7 +303,7 @@ namespace BinarySearch
 
         private static void PerformansePrint(long[] binar, long[] linear, int[] array)
         {
-            Console.Write("[0 - " +array.Length+ "]: результат - ");
+            Console.Write("[0 - " + array.Length + "]: результат - ");
             Console.ForegroundColor = binar[2] >= 0 ? ConsoleColor.Green : ConsoleColor.Red;
             Console.Write(binar[2] >= 0 ? "Успешно! " : "Не найдено! ");
             Console.ResetColor();
