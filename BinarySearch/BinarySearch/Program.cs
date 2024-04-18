@@ -1,24 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace BinarySearch
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             int size = Convert.ToInt32(Console.ReadLine());
-            int[] a = new int[size];
-            List<int> list;
+        }
+    }
 
-            for (int i = 0; i < a.Length; i++)
+    internal class SearchableArray
+    {
+        public int[] array;
+
+        public SearchableArray(int size = 10)
+        {
+            array = new int[size];
+            FillArray();
+        }
+
+        private void FillArray()
+        {
+            for (int i = 0; i < array.Length; i++)
             {
-                a[i] = 1;
+                array[i] = i;
             }
-            for (int i = 0; i < a.Length; i++)
-            {
-                Console.WriteLine(a[i]);
+        }
 
+        //Существует ради отладки
+        public void Print()
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.Write(i != array.Length - 1 ? array[i] + ',' : array[i]);
             }
         }
     }
