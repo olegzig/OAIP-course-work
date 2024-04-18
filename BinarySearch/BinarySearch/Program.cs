@@ -315,10 +315,10 @@ namespace BinarySearch
 
             Console.WriteLine("Среднее время линейного поиска: " + linearAverage);
             Console.WriteLine("Среднее время бинарного поиска: " + binarAverage);
-
+            Console.WriteLine();
             Console.WriteLine("Максимальное время линейного поиска: " + linearMaximum);
             Console.WriteLine("Максимальное время бинарного поиска: " + binarMaximum);
-
+            Console.WriteLine();
             Console.WriteLine("Минимальное время линейного поиска: " + linearMinimum);
             Console.WriteLine("Минимальное время бинарного поиска: " + binarMinimum);
         }
@@ -346,11 +346,11 @@ namespace BinarySearch
 
             if (linear[0] > linearMaximum)
             {
-                linearMaximum = binar[0];
+                linearMaximum = linear[0];
             }
             else if (linear[0] < linearMinimum)
             {
-                linearMinimum = binar[0];
+                linearMinimum = linear[0];
             }
         }
 
