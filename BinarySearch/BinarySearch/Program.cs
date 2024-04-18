@@ -4,7 +4,7 @@ namespace BinarySearch
 {
     internal class Program
     {
-        private static SearchableArray array;
+        private static JaggedArray array;
 
         private static void Main(string[] args)
         {
@@ -17,14 +17,15 @@ namespace BinarySearch
             Console.Write("Для начала работы программы, введите размер массива (по умолчанию 10): ");
             string input = Console.ReadLine();
             int.TryParse(input, out int size);
-            array = new SearchableArray(size);
+            array = new JaggedArray(size);
 
             CLSAfterKeydown();
         }
 
         private static void SelectSearchableValues()
         {
-            Console.WriteLine();
+            Console.Write("Введите значения для поиска (допускается ввод множ-ва значений через пробел): ");
+
         }
 
         private static void CLSAfterKeydown()
@@ -35,46 +36,80 @@ namespace BinarySearch
         }
     }
 
-    internal class SearchableArray
+    internal class JaggedArray
     {
-        public int[] array;
+        public int[][] array;
 
-        public SearchableArray(int size)
+        public JaggedArray(int size)
         {
-            array = new int[size == 0 ? 10 : size];
-            FillArray();
-            ConsoleMessages.ShowPositiveMessage("Создание успешно! Размер: " + array.Length);
+            array = new int[ArraysAmount(size)][];
+            FillArray(size);
+            ConsoleMessages.ShowPositiveMessage("Создание успешно! Количество: " + array.Length);
 
-            if (array.Length <= 1000)
+            if (array.Length < 100)
             {
                 Print();
             }
             else
             {
-                ConsoleMessages.ShowInfoMessage("Так как размер больше 1000, отображатся массив не будет.");
+                ConsoleMessages.ShowInfoMessage("Так как размер больше 100, отображатся массив не будет.");
             }
         }
 
-        private void FillArray()
+        private int ArraysAmount(int size)
         {
+            return ((size == 0 ? 10 : size) + 9) / 10;
+        }
+
+        private void FillArray(int size)
+        {
+            int currentSize = 0;
             for (int i = 0; i < array.Length; i++)
             {
-                array[i] = i + 1;
+                currentSize += 10;
+                array[i] = new int[(size - currentSize) > 0? currentSize:  size];
+                for (int j = 0; j < array[i].Length; j++)
+                { 
+                    array[i][j] = j+1;
+                }
             }
         }
 
         //Существует ради отладки
         public void Print()
         {
-            Console.Write('[');
             for (int i = 0; i < array.Length; i++)
             {
-                Console.Write(i != array.Length - 1 ? (array[i] + ",") : array[i]);
+                Console.Write('[');
+                for (int j = 0; j < array[i].Length; j++)
+                {
+                    Console.Write(j != array[i].Length - 1 ? (array[i][j] + ",") : array[i][j]);
+                }
+                Console.WriteLine(']');
             }
-            Console.WriteLine(']');
+        }
+    }
+
+    internal static class ConsoleMessages
+    {
+        public static void ShowPositiveMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(message);
+            Console.ResetColor();
         }
 
-        public int FindElPositionViaBinarySearch(int elementValue)
+        public static void ShowInfoMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+    }
+
+    class Search
+    {
+        public int FindElPositionViaBinarySearch(int elementValue, int[] array)
         {
             int left = 0;
             int right = array.Length - 1;
@@ -100,7 +135,7 @@ namespace BinarySearch
             return -1;
         }
 
-        public int FindElPositionByLinearSearch(int elementValue)
+        public int FindElPositionByLinearSearch(int elementValue, int[] array)
         {
             for (int i = 0; i < array.Length; i++)
             {
@@ -110,23 +145,6 @@ namespace BinarySearch
                 }
             }
             return -1;
-        }
-    }
-
-    internal static class ConsoleMessages
-    {
-        public static void ShowPositiveMessage(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(message);
-            Console.ResetColor();
-        }
-
-        public static void ShowInfoMessage(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine(message);
-            Console.ResetColor();
         }
     }
 }
