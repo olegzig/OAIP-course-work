@@ -233,12 +233,14 @@ namespace BinarySearch
 
         private static long binarMinimum = long.MaxValue;
         private static long binarMaximum = long.MaxValue;
+        private static double binarAverage;
 
         //[номер искомого в Search][При размере][Результаты - ticks,result(bool)]
         private static long[][][] linearResults;
 
         private static long linearMinimum = long.MaxValue;
         private static long linearMaximum = long.MaxValue;
+        private static double linearAverage;
 
         public static void Start(JaggedArray array)
         {
@@ -304,10 +306,12 @@ namespace BinarySearch
                 for (int j = 0; j < binarResults[i].Length; j++)
                 {
                     PerformansePrint(binarResults[i][j], linearResults[i][j], array.array[j]);
+                    SetExtremes(binarResults[i][j], linearResults[i][j]);
                 }
             }
 
             Console.WriteLine("\nИтоговая статистика:");
+            CountAverage();
         }
 
         private static void PerformansePrint(long[] binar, long[] linear, int[] array)
@@ -318,6 +322,46 @@ namespace BinarySearch
             Console.ResetColor();
 
             Console.WriteLine(" Время линейного: " + linear[0] + " ticks; Время бинарного: " + binar[0] + " ticks");
+        }
+
+        private static void SetExtremes(long[] binar, long[] linear)
+        {
+            if (binar[0] > binarMaximum)
+            {
+                binarMaximum = binar[0];
+            }
+            else if (binar[0] < binarMinimum)
+            {
+                binarMinimum = binar[0];
+            }
+
+            if (linear[0] > linearMaximum)
+            {
+                linearMaximum = binar[0];
+            }
+            else if (linear[0] < linearMinimum)
+            {
+                linearMinimum = binar[0];
+            }
+        }
+
+        private static void CountAverage()
+        {
+            long bSum = 0;
+            int counter = 0;
+            long lSum = 0;
+            for (int i = 0; i < binarResults.Length; i++)
+            {
+                for (int j = 0; j < binarResults[i].Length; j++)
+                {
+                    bSum += binarResults[i][j][0];
+
+                    lSum += linearResults[i][j][0];
+                    counter++;
+                }
+            }
+
+            binarAverage = (double)bSum / counter;
         }
     }
 }
