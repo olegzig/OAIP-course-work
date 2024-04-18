@@ -6,7 +6,12 @@ namespace BinarySearch
     {
         private static void Main(string[] args)
         {
-            int size = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Для начала работы программы, введите размер массива (по умолчанию 10): ");
+            string input = Console.ReadLine();
+            int.TryParse(input, out int size);
+            SearchableArray array = new SearchableArray(size);
+
+            array.Print();
         }
     }
 
@@ -14,27 +19,44 @@ namespace BinarySearch
     {
         public int[] array;
 
-        public SearchableArray(int size = 10)
+        public SearchableArray(int size)
         {
-            array = new int[size];
+            array = new int[size == 0 ? 10 : size];
             FillArray();
+            ShowPositiveMessage("Создание успешно!");
         }
 
         private void FillArray()
         {
             for (int i = 0; i < array.Length; i++)
             {
-                array[i] = i;
+                array[i] = i + 1;
             }
         }
 
         //Существует ради отладки
         public void Print()
         {
+            Console.Write('[');
             for (int i = 0; i < array.Length; i++)
             {
-                Console.Write(i != array.Length - 1 ? array[i] + ',' : array[i]);
+                Console.Write(i != array.Length - 1 ? (array[i] + ",") : array[i]);
             }
+            Console.WriteLine(']');
+        }
+
+        private static void ShowPositiveMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+
+        private static void ShowNegativeMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(message);
+            Console.ResetColor();
         }
     }
 }
