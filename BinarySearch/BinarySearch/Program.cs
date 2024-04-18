@@ -6,6 +6,11 @@ namespace BinarySearch
     {
         private static void Main(string[] args)
         {
+            Start();
+        }
+
+        private static void Start()
+        {
             Console.Write("Для начала работы программы, введите размер массива (по умолчанию 10): ");
             string input = Console.ReadLine();
             int.TryParse(input, out int size);
