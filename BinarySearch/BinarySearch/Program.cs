@@ -4,17 +4,34 @@ namespace BinarySearch
 {
     internal class Program
     {
+        private static SearchableArray array;
+
         private static void Main(string[] args)
         {
-            Start();
+            Init();
+            SelectSearchableValues();
         }
 
-        private static void Start()
+        private static void Init()
         {
             Console.Write("Для начала работы программы, введите размер массива (по умолчанию 10): ");
             string input = Console.ReadLine();
             int.TryParse(input, out int size);
-            SearchableArray array = new SearchableArray(size);
+            array = new SearchableArray(size);
+
+            CLSAfterKeydown();
+        }
+
+        private static void SelectSearchableValues()
+        {
+            Console.WriteLine();
+        }
+
+        private static void CLSAfterKeydown()
+        {
+            ConsoleMessages.ShowInfoMessage("Нажмите кнопку чтобы продолжить...");
+            Console.ReadKey();
+            Console.Clear();
         }
     }
 
@@ -26,15 +43,15 @@ namespace BinarySearch
         {
             array = new int[size == 0 ? 10 : size];
             FillArray();
-            ShowPositiveMessage("Создание успешно! Размер: " + array.Length);
+            ConsoleMessages.ShowPositiveMessage("Создание успешно! Размер: " + array.Length);
 
-            if(array.Length <= 1000)
+            if (array.Length <= 1000)
             {
                 Print();
             }
             else
             {
-                ShowInfoMessage("Так как размер больше 1000, отображатся массив не будет.");
+                ConsoleMessages.ShowInfoMessage("Так как размер больше 1000, отображатся массив не будет.");
             }
         }
 
@@ -69,7 +86,7 @@ namespace BinarySearch
                 if (array[index] == elementValue)
                 {
                     return index;
-                } 
+                }
 
                 if (array[index] < elementValue)
                 {
@@ -82,15 +99,18 @@ namespace BinarySearch
             }
             return -1;
         }
+    }
 
-        private static void ShowPositiveMessage(string message)
+    internal static class ConsoleMessages
+    {
+        public static void ShowPositiveMessage(string message)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(message);
             Console.ResetColor();
         }
 
-        private static void ShowInfoMessage(string message)
+        public static void ShowInfoMessage(string message)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(message);
