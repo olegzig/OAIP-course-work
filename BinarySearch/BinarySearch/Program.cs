@@ -74,7 +74,7 @@ namespace BinarySearch
             Console.WriteLine(']');
         }
 
-        public int FindPositionViaBinarySearch(int elementValue)
+        public int FindElPositionViaBinarySearch(int elementValue)
         {
             int left = 0;
             int right = array.Length - 1;
@@ -95,6 +95,18 @@ namespace BinarySearch
                 else
                 {
                     right = index - 1;
+                }
+            }
+            return -1;
+        }
+
+        public int FindElPositionByLinearSearch(int elementValue)
+        {
+            for(int i = 0; i < array.Length; i++)
+            {
+                if(array[i] == elementValue)
+                {
+                    return i;
                 }
             }
             return -1;
