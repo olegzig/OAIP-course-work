@@ -36,23 +36,25 @@ namespace BinarySearch
         {
             ConsoleManipulator.ShowWarningMessage("Начинается бенчмарк. Ожидайте.");
             Benchmark.Start(array);
-            Benchmark.PrintResults();
+            Benchmark.PrintResults(array);
         }
     }
 
     internal class JaggedArray
     {
         public int[][] array;
+        private const int step = 100;
+        private const int defaultSize = 100;
+        private const int maxSize = 700000; //узнал путём эксперементов
 
         public JaggedArray(int size)
         {
-            //Для установки значения по умолчанию
-            size = size == 0 ? 100 : size;
+            size = ValidateSize(size);
             array = new int[ArraysAmount(size)][];
             FillArray(size);
             ConsoleManipulator.ShowPositiveMessage("Создание успешно! Количество: " + array.Length);
 
-            if (array.Length < 100)
+            if (array[array.Length-1].Length < 100)
             {
                 Print();
             }
@@ -62,9 +64,26 @@ namespace BinarySearch
             }
         }
 
+        private int ValidateSize(int size)
+        {
+            if(size == 0)
+            {
+                ConsoleManipulator.ShowInfoMessage("Установлено значение по умолчанию: " + defaultSize);
+                return defaultSize;
+            }
+            if(size > maxSize)
+            {
+                ConsoleManipulator.ShowWarningMessage("Значения выше " + maxSize + " приводят к заполнению оперативной памяти и зависанию ПК!");
+                ConsoleManipulator.ShowInfoMessage("Установлено безопастное значение (кушает ~10.2 гигов оперативы): " + maxSize);
+                return maxSize;
+            }
+            return size;
+        }
+
+
         public int ArraysAmount(int size)
         {
-            return ((size == 0 ? 10 : size) + 9) / 10;
+            return ((size == 0 ? 10 : size) + 9) / step;
         }
 
         private void FillArray(int size)
@@ -72,7 +91,7 @@ namespace BinarySearch
             int currentSize = 0;
             for (int i = 0; i < array.Length; i++)
             {
-                currentSize += 10;
+                currentSize += step;
                 array[i] = new int[(size - currentSize) > 0 ? currentSize : size];
                 for (int j = 0; j < array[i].Length; j++)
                 {
@@ -210,16 +229,15 @@ namespace BinarySearch
 
     internal static class Benchmark
     {
-        //[номер искомого в Search][При размере][Результаты - ms,result(bool)]
+        //[номер искомого в Search][При размере][Результаты - ms,ticks,result(bool)]
         private static long[][][] binarResults;
 
         private static long[][][] linearResults;
 
-
         public static void Start(JaggedArray array)
         {
             binarResults = new long[Search.getSearchValues().Length][][];
-            for(int i = 0; i < binarResults.Length;i++)
+            for (int i = 0; i < binarResults.Length; i++)
             {
                 binarResults[i] = new long[array.array.Length][];
             }
@@ -247,8 +265,7 @@ namespace BinarySearch
                     int result = Search.FindElPositionByLinearSearch(i, array[j]);
                     stopwatch.Stop();
 
-                    linearResults[i][j] = new long[] { stopwatch.ElapsedMilliseconds, result};
-
+                    linearResults[i][j] = new long[] { stopwatch.ElapsedMilliseconds, stopwatch.ElapsedTicks, result };
                 }
             }
         }
@@ -265,33 +282,34 @@ namespace BinarySearch
                     int result = Search.FindElPositionViaBinarySearch(i, array[j]);
                     stopwatch.Stop();
 
-                    binarResults[i][j] = new long[] { stopwatch.ElapsedMilliseconds, result};
+                    binarResults[i][j] = new long[] { stopwatch.ElapsedMilliseconds, stopwatch.ElapsedTicks, result };
                 }
             }
         }
 
-        public static void PrintResults()
+        public static void PrintResults(JaggedArray array)
         {
             Console.Clear();
+            Console.WriteLine("Время отображается в формате \"Миллисекунды.тики\"");
 
-            for(int i = 0; i < binarResults.Length; i++)
+            for (int i = 0; i < binarResults.Length; i++)
             {
                 ConsoleManipulator.ShowInfoMessage("Результаты для значения \"" + Search.getSearchValues()[i] + "\":");
-                for(int j = 0; j < binarResults[i].Length; j++)
+                for (int j = 0; j < binarResults[i].Length; j++)
                 {
-                    PerformansePrint(binarResults[i][j], linearResults[i][j]);
+                    PerformansePrint(binarResults[i][j], linearResults[i][j], array.array[j]);
                 }
             }
         }
 
-        private static void PerformansePrint(long[] binar, long[] linear)
+        private static void PerformansePrint(long[] binar, long[] linear, int[] array)
         {
-            Console.Write("Результат - ");
-            Console.ForegroundColor = binar[1] >= 0 ? ConsoleColor.Green : ConsoleColor.Red;
-            Console.Write(binar[1] >= 0 ? "Успешно! ":"Не найдено! ");
+            Console.Write("[0 - " +array.Length+ "]: результат - ");
+            Console.ForegroundColor = binar[2] >= 0 ? ConsoleColor.Green : ConsoleColor.Red;
+            Console.Write(binar[2] >= 0 ? "Успешно! " : "Не найдено! ");
             Console.ResetColor();
 
-            Console.WriteLine(" Время линейного: " + linear[0] + " Время бинарного: " + binar[0]);
+            Console.WriteLine(" Время линейного: " + linear[0] + "." + linear[1] + " Время бинарного: " + binar[0] + "." + binar[1]);
         }
     }
 }
