@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace BinarySearch
 {
@@ -10,6 +11,7 @@ namespace BinarySearch
         {
             Init();
             SelectSearchableValues();
+            StartBenchmark();
         }
 
         private static void Init()
@@ -28,6 +30,12 @@ namespace BinarySearch
             Search.setSearchValuesViaString(Console.ReadLine());
 
             ConsoleManipulator.CLSAfterKeydown();
+        }
+
+        private static void StartBenchmark()
+        {
+            ConsoleManipulator.ShowWarningMessage("Начинается бенчмарк. Ожидайте.");
+            Benchmark.Start(array);
         }
     }
 
@@ -53,7 +61,7 @@ namespace BinarySearch
             }
         }
 
-        private int ArraysAmount(int size)
+        public int ArraysAmount(int size)
         {
             return ((size == 0 ? 10 : size) + 9) / 10;
         }
@@ -91,13 +99,23 @@ namespace BinarySearch
         public static void ShowPositiveMessage(string message)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(message);
-            Console.ResetColor();
+            ShowMessage(message);
         }
 
         public static void ShowInfoMessage(string message)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            ShowMessage(message);
+        }
+
+        public static void ShowWarningMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            ShowMessage(message);
+        }
+
+        private static void ShowMessage(string message)
+        {
             Console.WriteLine(message);
             Console.ResetColor();
         }
@@ -113,6 +131,11 @@ namespace BinarySearch
     internal static class Search
     {
         private static int[] searchValues;
+
+        public static int[] getSearchAmount()
+        {
+            return searchValues;
+        }
 
         public static void setSearchValuesViaString(string str)
         {
@@ -145,7 +168,7 @@ namespace BinarySearch
             Console.WriteLine(']');
         }
 
-        public static int FindElPositionViaBinarySearch(int elementValue, int[] array)
+        public static int FindElPositionViaBinarySearch(int searchValuePosition, int[] array)
         {
             int left = 0;
             int right = array.Length - 1;
@@ -154,12 +177,12 @@ namespace BinarySearch
             while (left <= right)
             {
                 index = (right + left) / 2;
-                if (array[index] == elementValue)
+                if (array[index] == searchValues[searchValuePosition])
                 {
                     return index;
                 }
 
-                if (array[index] < elementValue)
+                if (array[index] < searchValues[searchValuePosition])
                 {
                     left = index + 1;
                 }
@@ -171,11 +194,11 @@ namespace BinarySearch
             return -1;
         }
 
-        public static int FindElPositionByLinearSearch(int elementValue, int[] array)
+        public static int FindElPositionByLinearSearch(int searchValuePosition, int[] array)
         {
             for (int i = 0; i < array.Length; i++)
             {
-                if (array[i] == elementValue)
+                if (array[i] == searchValues[searchValuePosition])
                 {
                     return i;
                 }
@@ -184,8 +207,66 @@ namespace BinarySearch
         }
     }
 
-    static class Exec
+    internal static class Benchmark
     {
+        //[номер искомого в Search][При размере][Результаты - ms,result(bool)]
+        private static long[][][] binarResults;
 
+        private static long[][][] linearResults;
+
+
+        public static void Start(JaggedArray array)
+        {
+            binarResults = new long[Search.getSearchAmount().Length][][];
+            for(int i = 0; i < binarResults.Length;i++)
+            {
+                binarResults[i] = new long[array.array.Length][];
+            }
+
+            TestBinar(array.array);
+
+            linearResults = new long[Search.getSearchAmount().Length][][];
+            for (int i = 0; i < linearResults.Length; i++)
+            {
+                linearResults[i] = new long[array.array.Length][];
+            }
+
+            TestLinear(array.array);
+        }
+
+        private static void TestLinear(int[][] array)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+
+            for (int i = 0; i < Search.getSearchAmount().Length; i++)
+            {
+                for (int j = 0; j < array.Length; j++)
+                {
+                    stopwatch.Start();
+                    int result = Search.FindElPositionByLinearSearch(i, array[j]);
+                    stopwatch.Stop();
+
+                    linearResults[i][j] = new long[] { stopwatch.ElapsedMilliseconds, j, result == -1 ? 0 : 1 };
+
+                }
+            }
+        }
+
+        private static void TestBinar(int[][] array)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+
+            for (int i = 0; i < Search.getSearchAmount().Length; i++)
+            {
+                for (int j = 0; j < array.Length; j++)
+                {
+                    stopwatch.Start();
+                    int result = Search.FindElPositionViaBinarySearch(i, array[j]);
+                    stopwatch.Stop();
+
+                    binarResults[i][j] = new long[] { stopwatch.ElapsedMilliseconds, j, result == -1 ? 0 : 1 };
+                }
+            }
+        }
     }
 }
