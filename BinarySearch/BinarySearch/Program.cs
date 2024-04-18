@@ -278,6 +278,7 @@ namespace BinarySearch
             {
                 for (int j = 0; j < array.Length; j++)
                 {
+                    stopwatch.Restart();
                     stopwatch.Start();
                     int result = Search.FindElPositionViaBinarySearch(i, array[j]);
                     stopwatch.Stop();
