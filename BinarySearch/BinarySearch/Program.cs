@@ -25,6 +25,9 @@ namespace BinarySearch
         private static void SelectSearchableValues()
         {
             Console.Write("Введите значения для поиска (допускается ввод множ-ва значений через пробел): ");
+            Search.setSearchValuesViaString(Console.ReadLine());
+
+            CLSAfterKeydown();
         }
 
         private static void CLSAfterKeydown()
@@ -107,9 +110,42 @@ namespace BinarySearch
         }
     }
 
-    internal class Search
+    internal static class Search
     {
-        public int FindElPositionViaBinarySearch(int elementValue, int[] array)
+        private static int[] searchValues;
+
+        public static void setSearchValuesViaString(string str)
+        {
+            string[] stringArray = str.Split(' ');
+            searchValues = new int[stringArray.Length];
+
+            for (int i = 0; i < stringArray.Length; i++)
+            {
+                int.TryParse(stringArray[i], out searchValues[i]);
+            }
+
+            ConsoleMessages.ShowPositiveMessage("Числа получены! Количество: " + searchValues.Length);
+            if (searchValues.Length < 100)
+            {
+                Print();
+            }
+            else
+            {
+                ConsoleMessages.ShowInfoMessage("Так как размер больше 100, отображатся массивы не будут.");
+            }
+        }
+
+        public static void Print()
+        {
+            Console.Write('[');
+            for (int i = 0; i < searchValues.Length; i++)
+            {
+                Console.Write(i != searchValues.Length - 1 ? (searchValues[i] + ",") : searchValues[i]);
+            }
+            Console.WriteLine(']');
+        }
+
+        public static int FindElPositionViaBinarySearch(int elementValue, int[] array)
         {
             int left = 0;
             int right = array.Length - 1;
@@ -135,7 +171,7 @@ namespace BinarySearch
             return -1;
         }
 
-        public int FindElPositionByLinearSearch(int elementValue, int[] array)
+        public static int FindElPositionByLinearSearch(int elementValue, int[] array)
         {
             for (int i = 0; i < array.Length; i++)
             {
