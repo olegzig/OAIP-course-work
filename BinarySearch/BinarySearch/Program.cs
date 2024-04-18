@@ -36,6 +36,7 @@ namespace BinarySearch
         {
             ConsoleManipulator.ShowWarningMessage("Начинается бенчмарк. Ожидайте.");
             Benchmark.Start(array);
+            Benchmark.PrintResults();
         }
     }
 
@@ -132,7 +133,7 @@ namespace BinarySearch
     {
         private static int[] searchValues;
 
-        public static int[] getSearchAmount()
+        public static int[] getSearchValues()
         {
             return searchValues;
         }
@@ -217,7 +218,7 @@ namespace BinarySearch
 
         public static void Start(JaggedArray array)
         {
-            binarResults = new long[Search.getSearchAmount().Length][][];
+            binarResults = new long[Search.getSearchValues().Length][][];
             for(int i = 0; i < binarResults.Length;i++)
             {
                 binarResults[i] = new long[array.array.Length][];
@@ -225,7 +226,7 @@ namespace BinarySearch
 
             TestBinar(array.array);
 
-            linearResults = new long[Search.getSearchAmount().Length][][];
+            linearResults = new long[Search.getSearchValues().Length][][];
             for (int i = 0; i < linearResults.Length; i++)
             {
                 linearResults[i] = new long[array.array.Length][];
@@ -238,7 +239,7 @@ namespace BinarySearch
         {
             Stopwatch stopwatch = new Stopwatch();
 
-            for (int i = 0; i < Search.getSearchAmount().Length; i++)
+            for (int i = 0; i < Search.getSearchValues().Length; i++)
             {
                 for (int j = 0; j < array.Length; j++)
                 {
@@ -246,7 +247,7 @@ namespace BinarySearch
                     int result = Search.FindElPositionByLinearSearch(i, array[j]);
                     stopwatch.Stop();
 
-                    linearResults[i][j] = new long[] { stopwatch.ElapsedMilliseconds, j, result == -1 ? 0 : 1 };
+                    linearResults[i][j] = new long[] { stopwatch.ElapsedMilliseconds, result};
 
                 }
             }
@@ -256,7 +257,7 @@ namespace BinarySearch
         {
             Stopwatch stopwatch = new Stopwatch();
 
-            for (int i = 0; i < Search.getSearchAmount().Length; i++)
+            for (int i = 0; i < Search.getSearchValues().Length; i++)
             {
                 for (int j = 0; j < array.Length; j++)
                 {
@@ -264,9 +265,33 @@ namespace BinarySearch
                     int result = Search.FindElPositionViaBinarySearch(i, array[j]);
                     stopwatch.Stop();
 
-                    binarResults[i][j] = new long[] { stopwatch.ElapsedMilliseconds, j, result == -1 ? 0 : 1 };
+                    binarResults[i][j] = new long[] { stopwatch.ElapsedMilliseconds, result};
                 }
             }
+        }
+
+        public static void PrintResults()
+        {
+            Console.Clear();
+
+            for(int i = 0; i < binarResults.Length; i++)
+            {
+                ConsoleManipulator.ShowInfoMessage("Результаты для значения \"" + Search.getSearchValues()[i] + "\":");
+                for(int j = 0; j < binarResults[i].Length; j++)
+                {
+                    PerformansePrint(binarResults[i][j], linearResults[i][j]);
+                }
+            }
+        }
+
+        private static void PerformansePrint(long[] binar, long[] linear)
+        {
+            Console.Write("Результат - ");
+            Console.ForegroundColor = binar[1] >= 0 ? ConsoleColor.Green : ConsoleColor.Red;
+            Console.Write(binar[1] >= 0 ? "Успешно! ":"Не найдено! ");
+            Console.ResetColor();
+
+            Console.WriteLine(" Время линейного: " + linear[0] + " Время бинарного: " + binar[0]);
         }
     }
 }
