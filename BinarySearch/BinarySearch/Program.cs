@@ -54,7 +54,7 @@ namespace BinarySearch
             FillArray(size);
             ConsoleManipulator.ShowPositiveMessage("Создание успешно! Количество: " + array.Length);
 
-            if (array.Length > 1)
+            if (array.Length < 2)
             {
                 Print();
             }
@@ -82,7 +82,7 @@ namespace BinarySearch
 
         public int ArraysAmount(int size)
         {
-            return ((size == 0 ? 10 : size) + 9) / step;
+            return ((size == 0 ? defaultSize : size) + (-1)*(1-defaultSize)) / step;
         }
 
         private void FillArray(int size)
