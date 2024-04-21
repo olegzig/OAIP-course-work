@@ -34,7 +34,7 @@ namespace BinarySearch
 
         private static void StartBenchmark()
         {
-            ConsoleManipulator.ShowWarningMessage("Начинается бенчмарк. Ожидайте.");
+            ConsoleManipulator.ShowNegativeMessage("Начинается бенчмарк. Ожидайте.");
             Benchmark.Start(array);
             Benchmark.PrintResults(array);
         }
@@ -73,7 +73,7 @@ namespace BinarySearch
             }
             if (size > maxSize)
             {
-                ConsoleManipulator.ShowWarningMessage("Значения выше " + maxSize + " приводят к заполнению оперативной памяти и зависанию ПК!");
+                ConsoleManipulator.ShowNegativeMessage("Значения выше " + maxSize + " приводят к заполнению оперативной памяти и зависанию ПК!");
                 ConsoleManipulator.ShowInfoMessage("Установлено безопастное значение (выяснено эксперементальным путём. Кушает ~10.2 гигов оперативы): " + maxSize);
                 return maxSize;
             }
@@ -127,7 +127,7 @@ namespace BinarySearch
             ShowMessage(message);
         }
 
-        public static void ShowWarningMessage(string message)
+        public static void ShowNegativeMessage(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             ShowMessage(message);
