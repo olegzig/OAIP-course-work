@@ -54,13 +54,13 @@ namespace BinarySearch
             FillArray(size);
             ConsoleManipulator.ShowPositiveMessage("Создание успешно! Количество: " + array.Length);
 
-            if (array[array.Length - 1].Length < 100)
+            if (array.Length > 1)
             {
                 Print();
             }
             else
             {
-                ConsoleManipulator.ShowInfoMessage("Так как размер больше 100, отображатся массивы не будут.");
+                ConsoleManipulator.ShowInfoMessage("Так как размер больше " + defaultSize + ", отображатся массивы не будут.");
             }
         }
 
