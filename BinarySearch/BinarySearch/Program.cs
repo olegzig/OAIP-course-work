@@ -339,7 +339,7 @@ namespace BinarySearch
             {
                 binarMaximum = binar[0];
             }
-            else if (binar[0] < binarMinimum)
+            if (binar[0] < binarMinimum)
             {
                 binarMinimum = binar[0];
             }
@@ -348,7 +348,7 @@ namespace BinarySearch
             {
                 linearMaximum = linear[0];
             }
-            else if (linear[0] < linearMinimum)
+            if (linear[0] < linearMinimum)
             {
                 linearMinimum = linear[0];
             }
