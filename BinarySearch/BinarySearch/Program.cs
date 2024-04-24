@@ -54,6 +54,8 @@ namespace BinarySearch
             FillArray(size);
             ConsoleManipulator.ShowPositiveMessage("Создание успешно! Количество: " + array.Length);
 
+            // Не будем отображать, если массив занимает более одной ячейки
+            // То бишь, размер больше чтем step
             if (array.Length < 2)
             {
                 Print();
@@ -66,10 +68,17 @@ namespace BinarySearch
 
         private int ValidateSize(int size)
         {
+            
             if (size == 0)
             {
                 ConsoleManipulator.ShowInfoMessage("Установлено значение по умолчанию: " + defaultSize);
                 return defaultSize;
+            }
+            else if(size < 0)
+            {
+                size = Math.Abs(size);
+                ConsoleManipulator.ShowNegativeMessage("Размер массива не может быть отрицательным!");
+                ConsoleManipulator.ShowInfoMessage("Установлено положительное значение: " + size);
             }
             if (size > maxSize)
             {
@@ -82,7 +91,7 @@ namespace BinarySearch
 
         public int ArraysAmount(int size)
         {
-            return ((size == 0 ? defaultSize : size) + (-1)*(1-defaultSize)) / step;
+            return ((size == 0 ? defaultSize : size) + Math.Abs(1-defaultSize)) / step;
         }
 
         private void FillArray(int size)
