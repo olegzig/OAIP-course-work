@@ -12,6 +12,7 @@ namespace BinarySearch
             Init();
             SelectSearchableValues();
             StartBenchmark();
+            Console.ReadKey();
         }
 
         private static void Init()
