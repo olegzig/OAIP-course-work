@@ -77,6 +77,8 @@ StyleCopReport.xml
 *.meta
 *.obj
 *.iobj
+
+ДИСК/
 *.pch
 *.pdb
 *.ipdb
